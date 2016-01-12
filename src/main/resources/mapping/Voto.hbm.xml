@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.tripodes.model.bean">
+
+    <class name="Voto" table="voto">
+        <id name="id" column="IdVoto" type="integer">
+            <generator class="increment" />
+        </id>
+        
+        <property name="idMesa" column="IdMesa" type="integer"/>
+        <property name="idOpcionVoto" column="IdOpcionVoto" type="integer"/>
+        <property name="idUsuario" column="IdUsuario" type="integer"/>
+        <property name="cantDiputado" column="CantDiputado" type="integer"/>
+        <property name="cantLegislador" column="CantLegislador" type="integer"/>
+        <property name="cantConsejal" column="CantConsejal" type="integer"/>
+        <property name="fechaAlta" column="fecha" type="timestamp"/>
+    </class>
+</hibernate-mapping>

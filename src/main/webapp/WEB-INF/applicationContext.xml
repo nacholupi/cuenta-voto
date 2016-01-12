@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<!-- the data source class is recommend to use com.mchange.v2.c3p0.ComboPooledDataSource 
+		in production phase -->
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="jdbc/voto">
+		</property>
+		<property name="resourceRef" value="true">
+		</property>
+		<property name="cache" value="true">
+		</property>
+		<property name="proxyInterface" value="javax.sql.DataSource">
+		</property>
+	</bean>
+
+	<!-- define Hibernate sessionFactory provided by Spring ORM -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- set other Hibernate properties in hibernate.cfg.xml file -->
+		<property name="configLocation" value="/WEB-INF/hibernate.cfg.xml" />
+	</bean>
+
+	<!-- define Hibernate sessionFactory provided by Spring -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- for using annotation @Transaction in DAOs -->
+	<tx:annotation-driven />
+
+	<!-- inject relative DAO and Service beans -->
+	<bean id="opcionVotoDAO" class="com.tripodes.model.dao.OpcionVotoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="opcionVotoManager" class="com.tripodes.service.OpcionVotoManagerImpl">
+		<property name="opcionVotoDAO" ref="opcionVotoDAO" />
+	</bean>
+	<bean id="votoDAO" class="com.tripodes.model.dao.VotoDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="votoManager" class="com.tripodes.service.VotoManagerImpl">
+		<property name="votoDAO" ref="votoDAO" />
+	</bean>
+	<bean id="mesaDAO" class="com.tripodes.model.dao.MesaDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="mesaManager" class="com.tripodes.service.MesaManagerImpl">
+		<property name="mesaDAO" ref="mesaDAO" />
+	</bean>
+	<bean id="reportesDAO" class="com.tripodes.model.dao.ReportesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>

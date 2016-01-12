@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>ELECCION CONCEJALES - Reportes</title>
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="scripts/excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="scripts/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="scripts/jquery.jqplot.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="scripts/jquery.tidy.table.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.pieRenderer.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.json2.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.pointLabels.min.js"></script>
+<script type="text/javascript" src="scripts/plugins/jqplot.barRenderer.min.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.jqplot.css" />
+<link rel="stylesheet" type="text/css" href="styles/jquery.tidy.table.min.css" />
+</head>
+<body style="margin: 0; padding: 0; text-align: center;">
+	<div style="background: #0099CC; box-shadow: 0px 0px 12px #888888;">
+		<div style="padding-right: 20px; height: 90px; margin: 0px;">
+			<div style="width: 100%;">
+				<div style="float: left; margin-left: 80px;">
+					<h1
+						style="color: white; font-size: 2em; font-family: verdana, arial; margin-bottom: 0; margin-top: 15px;">ELECCION
+						CONCEJALES 2013 | SAN ISIDRO</h1>
+<!-- 					<h2 -->
+<!-- 						style="color: white; font-size: 1.3em; font-family: verdana, arial; margin-top: 0; text-align: left;">PRIMARIAS -->
+<!-- 						ABIERTAS SIMULTANEAS Y OBLIGATORIAS</h2> -->
+				</div>
+				<div
+					style="float: right; box-shadow: 0px 0px 12px rgb(136, 136, 136); margin-top: 13px; margin-right: 80px;">
+					<img width="166px" height="59px" src="img/fpv_logo-1.gif">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="porcEscrutDiv" class="jqplot-target" style="position: relative;"></div>
+	<div align=center>
+		<div id="chart" class="jqplot-target"
+			style="height: 590px; width: 1100px; position: relative; top: 10px;"></div>
+	</div>
+	<script type="text/javascript">
+		var CAMBIO = 20000;
+
+		var urlConsPart = "./jsonReport/jsonReport?op=consPart";
+		var urlBancas = "./jsonReport/jsonReport?op=bancas";
+		var urlPorcEscrutado = "./jsonReport/jsonReport?op=porcEscrutado";
+
+		var ajaxJson = function(url) {
+			var ret = null;
+			$.ajax({
+				async : false,
+				url : url,
+				dataType : "json",
+				success : function(data) {
+					ret = data;
+				}
+			});
+			return ret;
+		};
+
+		var ajaxDataRenderer = function(url, plot, options) {
+			return ajaxJson(url);
+		};
+
+		var ajaxDataForceSerie = function(url, plot, options) {
+			return [ ajaxDataRenderer(url, plot, options) ];
+		};
+
+		var plot1 = function() {
+			jQuery.jqplot('chart', urlConsPart, {
+				title : 'CONCEJALES POR AGRUPACIÓN',
+				dataRenderer : ajaxDataForceSerie,
+				seriesDefaults : {
+					renderer : $.jqplot.BarRenderer,
+					rendererOptions : {
+						barDirection : 'horizontal',
+						varyBarColor : true
+					},
+					pointLabels : {
+						show : true,
+						formatString: '%.2f%%'
+					}
+				},
+				axes : {
+					yaxis : {
+						renderer : $.jqplot.CategoryAxisRenderer
+					}
+				}
+			})
+		};
+
+		var plot4 = function() {
+			var ajaxBancas = ajaxJson(urlBancas);
+			$('#chart').TidyTable(
+					{},
+					{
+						columnTitles : [ 'Nro Lista', 'Agrupación', 'Cant. Bancas' ],
+						columnValues : ajaxBancas
+					})
+		};
+
+		var escrutRefresh = function() {
+			var escrutData = ajaxJson(urlPorcEscrutado);
+			$('#porcEscrutDiv').html(
+					'Mesas escrutas al momento: <strong>' + escrutData
+							+ '%</strong>')
+		};
+
+		var plot1TO = function() {
+			setTimeout(function() {
+				$('#chart').empty();
+				escrutRefresh();
+				plot1();
+				$("div.jqplot-yaxis-tick:contains('FRENTE PARA LA VICTORIA')")
+						.addClass("fpv");
+				plot4TO();
+			}, CAMBIO)
+		};
+
+		var plot4TO = function() {
+			setTimeout(function() {
+				$('#chart').empty();
+				escrutRefresh();
+				plot4();
+				$("td:contains('FRENTE PARA LA VICTORIA')").addClass("fpv");
+				plot1TO();
+			}, CAMBIO)
+		};
+
+		$(document)
+				.ready(
+						function() {
+							escrutRefresh();
+							plot1();
+							$(
+									"div.jqplot-yaxis-tick:contains('FRENTE PARA LA VICTORIA')")
+									.addClass("fpv");
+							plot4TO();
+						});
+	</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+	<display-name>cuenta-voto-web</display-name>
+
+	<!-- spring -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+	<!-- ZK -->
+	<listener>
+		<description>ZK listener for session cleanup</description>
+		<listener-class>org.zkoss.zk.ui.http.HttpSessionListener</listener-class>
+	</listener>
+	<servlet>
+		<description>ZK loader for ZUML pages</description>
+		<servlet-name>zkLoader</servlet-name>
+		<servlet-class>org.zkoss.zk.ui.http.DHtmlLayoutServlet</servlet-class>
+		<init-param>
+			<param-name>update-uri</param-name>
+			<param-value>/zkau</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup><!-- Must -->
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>*.zul</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>*.zhtml</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>zkLoader</servlet-name>
+		<url-pattern>/zk/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>The asynchronous update engine for ZK</description>
+		<servlet-name>auEngine</servlet-name>
+		<servlet-class>org.zkoss.zk.au.http.DHtmlUpdateServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>auEngine</servlet-name>
+		<url-pattern>/zkau/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>dspLoader</servlet-name>
+		<servlet-class>org.zkoss.web.servlet.dsp.InterpreterServlet</servlet-class>
+		<init-param>
+			<param-name>class-resource</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<servlet-name>jsonReport</servlet-name>
+		<servlet-class>com.tripodes.reporte.servlet.ReporteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dspLoader</servlet-name>
+		<url-pattern>*.dsp</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>jsonReport</servlet-name>
+		<url-pattern>/jsonReport/jsonReport</url-pattern>
+	</servlet-mapping>
+
+	<!-- Hibernate OpenSession Filter -->
+	<filter>
+		<filter-name>lazyLoadingFilter</filter-name>
+		<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>lazyLoadingFilter</filter-name>
+		<url-pattern>/jsonReport/*</url-pattern>
+	</filter-mapping>
+
+	<session-config>
+		<session-timeout>6000</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>votacion.zul</welcome-file>
+	</welcome-file-list>
+	
+<!-- 	<security-constraint> -->
+<!-- 		<web-resource-collection> -->
+<!-- 			<web-resource-name>PASO - Requiere Autenticación</web-resource-name> -->
+<!-- 			<url-pattern>/*</url-pattern> -->
+<!-- 			<http-method>GET</http-method> -->
+<!-- 			<http-method>POST</http-method> -->
+<!-- 		</web-resource-collection> -->
+<!-- 		<auth-constraint> -->
+<!-- 			<role-name>paso</role-name> -->
+<!-- 		</auth-constraint> -->
+<!-- 		<user-data-constraint> -->
+<!-- 			<transport-guarantee>NONE</transport-guarantee> -->
+<!-- 		</user-data-constraint> -->
+<!-- 	</security-constraint> -->
+
+<!-- 	<login-config> -->
+<!-- 		<auth-method>BASIC</auth-method> -->
+<!-- 	</login-config> -->
+</web-app>
