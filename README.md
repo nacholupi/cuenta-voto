@@ -5,5 +5,5 @@ ZK + JS + Spring + MySql
 
 ## Build & development
 
-maven install
+maven clean install
 
