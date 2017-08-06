@@ -6,13 +6,13 @@ import com.tripodes.model.bean.Voto;
 
 public interface VotoManager {
 
-	public boolean save(Voto voto);
+	boolean save(Voto voto);
 
-	public boolean saveAll(List<Voto> listVoto);
+	boolean saveAll(List<Voto> listVoto);
 	
-	public boolean delete(Voto voto);
+	boolean delete(Voto voto);
 
-	public Voto findById(Integer id);
+	Voto findById(Integer id);
 
-	public List<Voto> getVotoList();
+	List<Voto> getVotoList();
 }

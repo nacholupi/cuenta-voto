@@ -32,7 +32,7 @@ public class ReporteServlet extends HttpServlet {
 
 		String value = request.getParameter("op");
 		
-		Object consulta = null;
+		Object consulta;
 		
 		if (value.equals("consPart")) {
 				consulta = service.concejalesPorPartido();

@@ -34,8 +34,7 @@ public class ReportesDAO {
 	}
 
 	protected SQLQuery createSQLQuery(String queryStr) {
-		SQLQuery query = session().createSQLQuery(queryStr);
-		return query;
+		return session().createSQLQuery(queryStr);
 	}
 
 	public List concejalesPorPartido() {
@@ -76,7 +75,7 @@ public class ReportesDAO {
 		}
 		
 		for (Object[] row : listOrigen) {
-			int index = 0;
+			int index;
 			
 			switch ((Integer) row[0]) {
 			case 9:

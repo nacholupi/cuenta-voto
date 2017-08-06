@@ -6,11 +6,11 @@ import com.tripodes.model.bean.OpcionVoto;
 
 public interface OpcionVotoManager {
 
-	public boolean save(OpcionVoto opcionVoto);
+	boolean save(OpcionVoto opcionVoto);
 
-	public boolean delete(OpcionVoto opcionVoto);
+	boolean delete(OpcionVoto opcionVoto);
 
-	public OpcionVoto findById(Integer id);
+	OpcionVoto findById(Integer id);
 
-	public List<OpcionVoto> getOpcionVotoList();
+	List<OpcionVoto> getOpcionVotoList();
 }

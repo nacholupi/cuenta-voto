@@ -18,13 +18,11 @@ public class MesaDAO extends HibernateDaoSupport {
 	}
 
 	public Mesa find(Class<Mesa> clazz, Integer id) throws DataAccessException {
-		Mesa mesa = (Mesa) getHibernateTemplate().load(clazz, id);
-		return mesa;
+		return getHibernateTemplate().load(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Mesa> findAll(Class<Mesa> clazz) throws DataAccessException {
-		List<Mesa> list = getHibernateTemplate().find("from " + clazz.getName() );
-		return list;
+		return (List<Mesa>) getHibernateTemplate().find("from " + clazz.getName() );
 	}
 }

@@ -39,7 +39,7 @@ public class VotacionCtrl extends GenericForwardComposer {
 	private static final List<Mesa> listMesa = ServiceLocator.getMesaManager()
 			.getMesaList();
 
-	private VotoManager votoManager = ServiceLocator.getVotoManager();
+	private final VotoManager votoManager = ServiceLocator.getVotoManager();
 
 	private ListModel listaVotos;
 	private Integer idMesa;
@@ -129,7 +129,7 @@ public class VotacionCtrl extends GenericForwardComposer {
 		Messagebox.show(mensaje, Labels.getLabel("votacion.titulo.confirmacion"),
 				Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
 					public void onEvent(Event evt) throws InterruptedException {
-						switch (((Integer) evt.getData()).intValue()) {
+						switch ((Integer) evt.getData()) {
 						case Messagebox.YES:
 							// GUARDAR!
 							contProcesoSubmit(listaVoto);

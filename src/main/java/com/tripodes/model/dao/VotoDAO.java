@@ -18,13 +18,11 @@ public class VotoDAO extends HibernateDaoSupport {
 	}
 
 	public Voto find(Class<Voto> clazz, Integer id) throws DataAccessException {
-		Voto voto = (Voto) getHibernateTemplate().load(clazz, id);
-		return voto;
+		return getHibernateTemplate().load(clazz, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Voto> findAll(Class<Voto> clazz) throws DataAccessException {
-		List<Voto> list = getHibernateTemplate().find("from " + clazz.getName() );
-		return list;
+		return (List<Voto>) getHibernateTemplate().find("from " + clazz.getName() );
 	}
 }
