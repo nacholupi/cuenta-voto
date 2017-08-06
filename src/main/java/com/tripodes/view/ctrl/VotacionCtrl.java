@@ -25,7 +25,6 @@ import com.tripodes.model.bean.OpcionVoto;
 import com.tripodes.model.bean.Voto;
 import com.tripodes.model.bean.VotoView;
 import com.tripodes.model.converter.VotoConverter;
-import com.tripodes.service.ServiceLocator;
 import com.tripodes.service.VotoManager;
 import com.tripodes.view.ctrl.renderer.CantBox;
 

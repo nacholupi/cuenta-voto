@@ -1,17 +1,13 @@
-package com.tripodes.service;
+package com.tripodes.view.ctrl;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import com.tripodes.service.MesaManager;
+import com.tripodes.service.OpcionVotoManager;
+import com.tripodes.service.VotoManager;
 import org.zkoss.zkplus.spring.SpringUtil;
 
 public class ServiceLocator {
 
 	private ServiceLocator() {
-	}
-
-	public static Session getHibernateSession() {
-		return ((SessionFactory) SpringUtil.getBean("sessionFactory",
-				SessionFactory.class)).getCurrentSession();
 	}
 
 	public static OpcionVotoManager getOpcionVotoManager() {
