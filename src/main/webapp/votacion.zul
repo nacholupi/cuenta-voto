@@ -3,13 +3,13 @@
 <?init class="org.zkoss.zkplus.databind.AnnotateDataBinderInit" root="./votaDiv" ?>
 <zk>
 	<hlayout>
-		<div id="votaDiv" apply="com.tripodes.view.ctrl.VotacionCtrl">
+		<div id="votaDiv" apply="com.tripodes.voto.view.VotacionCtrl">
 			<vbox>
 				<separator />
 				<separator />
 
 				<grid id="gridOpVoto"
-					rowRenderer="com.tripodes.view.ctrl.renderer.VotoViewRowRenderer">
+					rowRenderer="com.tripodes.voto.view.renderer.VotoViewRowRenderer">
 					<auxhead height="65px">
 						<auxheader align="center" label="${c:l('votacion.label.escrutinio')}"
 							colspan="4" />
