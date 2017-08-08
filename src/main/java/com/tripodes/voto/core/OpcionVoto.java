@@ -21,6 +21,8 @@ public class OpcionVoto implements Serializable {
     private String agrupacion;
     @Column(name = "listaint")
     private String listaInt;
+    @Column(name = "tienesenador")
+    private Boolean tieneSenador;
     @Column(name = "tienediputado")
     private Boolean tieneDip;
     @Column(name = "tienelegislador")
@@ -90,5 +92,13 @@ public class OpcionVoto implements Serializable {
 
     public void setTieneCons(Boolean tieneCons) {
         this.tieneCons = tieneCons;
+    }
+
+    public Boolean getTieneSenador() {
+        return tieneSenador;
+    }
+
+    public void setTieneSenador(Boolean tieneSenador) {
+        this.tieneSenador = tieneSenador;
     }
 }

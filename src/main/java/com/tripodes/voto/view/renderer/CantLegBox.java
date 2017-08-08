@@ -10,8 +10,7 @@ public class CantLegBox extends CantBox {
     private static final long serialVersionUID = 1L;
 
     public CantLegBox(final VotoView votoView) {
-        super();
-        super.setDisabled(!votoView.getTieneLeg());
+        super(!votoView.getTieneLeg());
         super.addEventListener(Events.ON_CHANGE, new EventListener() {
             public void onEvent(Event event) throws Exception {
                 votoView.setCantLegislador(getValue());

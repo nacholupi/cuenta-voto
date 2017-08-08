@@ -10,8 +10,7 @@ public class CantConsBox extends CantBox {
     private static final long serialVersionUID = 1L;
 
     public CantConsBox(final VotoView votoView) {
-        super();
-        super.setDisabled(!votoView.getTieneCons());
+        super(!votoView.getTieneCons());
         super.addEventListener(Events.ON_CHANGE, new EventListener() {
             public void onEvent(Event event) throws Exception {
                 votoView.setCantConsejal(getValue());

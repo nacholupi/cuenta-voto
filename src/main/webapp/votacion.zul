@@ -12,7 +12,7 @@
 					rowRenderer="com.tripodes.voto.view.renderer.VotoViewRowRenderer">
 					<auxhead height="65px">
 						<auxheader align="center" label="${c:l('votacion.label.escrutinio')}"
-							colspan="4" />
+							colspan="5" />
 						<auxheader align="center" colspan="2">
 							<vbox align="center" pack="center">
 								<label value="Mesa" />
@@ -24,7 +24,8 @@
 					</auxhead>
 					<columns height="40px">
 						<column width="60px"><label value="${c:l('votacion.column.nroLista')}" /></column>
-						<column hflex="9"><label value="${c:l('votacion.column.agrup')}" /></column>
+						<column hflex="7"><label value="${c:l('votacion.column.agrup')}" /></column>
+						<column hflex="2"><label value="${c:l('votacion.column.sen')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.dip')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.leg')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.cons')}" /></column>

@@ -1,7 +1,6 @@
 package com.tripodes.voto.core;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,48 +14,26 @@ public class EleccionService {
     private VotoRepository votoRepository;
 
     @Autowired
-    public void setOpcionVotoRepository(OpcionVotoRepository opcionVotoRepository) {
+    public EleccionService(OpcionVotoRepository opcionVotoRepository, MesaRepository mesaRepository,
+                           VotoRepository votoRepository) {
         this.opcionVotoRepository = opcionVotoRepository;
-    }
-
-    @Autowired
-    public void setMesaRepository(MesaRepository mesaRepository) {
         this.mesaRepository = mesaRepository;
-    }
-
-    @Autowired
-    public void setVotoRepository(VotoRepository votoRepository) {
         this.votoRepository = votoRepository;
     }
 
     public List<OpcionVoto> getOpcionVotoList() {
-        try {
-            return makeCollection(opcionVotoRepository.findAll());
-        } catch (DataAccessException e) {
-            //TODO LOGGER
-            e.printStackTrace();
-            return null;
-        }
+        return makeCollection(opcionVotoRepository.findAll());
     }
 
     public List<Mesa> getMesaList() {
-        try {
-            return makeCollection(mesaRepository.findAll());
-        } catch (DataAccessException e) {
-            //TODO LOGGER
-            e.printStackTrace();
-            return null;
-        }
+        return makeCollection(mesaRepository.findAll());
+
     }
 
     public boolean saveVotos(List<Voto> listVoto) {
-        try {
-            votoRepository.save(listVoto);
-            return true;
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            return false;
-        }
+        votoRepository.save(listVoto);
+        return true;
+
     }
 
     public static <E> List<E> makeCollection(Iterable<E> iter) {

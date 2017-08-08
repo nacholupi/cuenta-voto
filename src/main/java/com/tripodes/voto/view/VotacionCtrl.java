@@ -106,18 +106,20 @@ public class VotacionCtrl extends GenericForwardComposer {
     private void popUpSubmit(final List<Voto> listaVoto, final Mesa mesa)
             throws InterruptedException {
 
+        int totalSen = 0;
         int totalDip = 0;
         int totalLeg = 0;
         int totalCons = 0;
 
         for (Voto voto : listaVoto) {
+            totalSen += voto.getCantSenador();
             totalDip += voto.getCantDiputado();
             totalLeg += voto.getCantLegislador();
             totalCons += voto.getCantConsejal();
         }
 
         String mensaje = String.format(Labels.getLabel("votacion.warning.verifTotales"),
-                mesa.getId(), totalDip, totalLeg, totalCons);
+                mesa.getId(), totalSen, totalDip, totalLeg, totalCons);
         Messagebox.show(mensaje, Labels.getLabel("votacion.titulo.confirmacion"),
                 Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
                     public void onEvent(Event evt) throws InterruptedException {

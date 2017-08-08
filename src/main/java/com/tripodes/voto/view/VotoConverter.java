@@ -25,6 +25,7 @@ public class VotoConverter {
         votoView.setAgrupacion(opVoto.getAgrupacion());
         votoView.setListaInt(opVoto.getListaInt());
         votoView.setNroLista(opVoto.getNroLista());
+        votoView.setTieneSenador(opVoto.getTieneSenador());
         votoView.setTieneCons(opVoto.getTieneCons());
         votoView.setTieneDip(opVoto.getTieneDip());
         votoView.setTieneLeg(opVoto.getTieneLeg());
@@ -33,6 +34,7 @@ public class VotoConverter {
 
     public static Voto toVoto(VotoView votoView) {
         Voto voto = new Voto();
+        voto.setCantSenador(votoView.getCantSenador() == null ? 0 : votoView.getCantSenador());
         voto.setCantConsejal(votoView.getCantConsejal() == null ? 0 : votoView.getCantConsejal());
         voto.setCantDiputado(votoView.getCantDiputado() == null ? 0 : votoView.getCantDiputado());
         voto.setCantLegislador(votoView.getCantLegislador() == null ? 0 : votoView.getCantLegislador());

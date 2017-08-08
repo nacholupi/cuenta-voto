@@ -6,8 +6,9 @@ public class CantBox extends Intbox {
 
     private static final long serialVersionUID = 1L;
 
-    public CantBox() {
+    public CantBox(final boolean disabled) {
         super();
+        super.setDisabled(disabled);
         super.setConstraint("no empty, no negative:Campo Obligatorio");
     }
 }

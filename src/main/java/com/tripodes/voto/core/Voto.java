@@ -22,6 +22,8 @@ public class Voto implements Serializable {
     private Integer idOpcionVoto;
     @Column(name = "idusuario")
     private Integer idUsuario;
+    @Column(name = "cantsenador")
+    private Integer cantSenador;
     @Column(name = "cantdiputado")
     private Integer cantDiputado;
     @Column(name = "cantlegislador")
@@ -95,4 +97,11 @@ public class Voto implements Serializable {
         this.fechaAlta = fechaAlta;
     }
 
+    public Integer getCantSenador() {
+        return cantSenador;
+    }
+
+    public void setCantSenador(Integer cantSenador) {
+        this.cantSenador = cantSenador;
+    }
 }

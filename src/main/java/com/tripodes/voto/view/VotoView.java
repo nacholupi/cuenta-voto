@@ -10,10 +10,12 @@ public class VotoView implements Serializable {
     private Integer nroLista;
     private String agrupacion;
     private String listaInt;
+    private Boolean tieneSenador;
     private Boolean tieneDip;
     private Boolean tieneLeg;
     private Boolean tieneCons;
 
+    private Integer cantSenador;
     private Integer cantDiputado;
     private Integer cantLegislador;
     private Integer cantConsejal;
@@ -96,6 +98,22 @@ public class VotoView implements Serializable {
 
     public void setTieneCons(Boolean tieneCons) {
         this.tieneCons = tieneCons;
+    }
+
+    public Boolean getTieneSenador() {
+        return tieneSenador;
+    }
+
+    public void setTieneSenador(Boolean tieneSenador) {
+        this.tieneSenador = tieneSenador;
+    }
+
+    public Integer getCantSenador() {
+        return cantSenador;
+    }
+
+    public void setCantSenador(Integer cantSenador) {
+        this.cantSenador = cantSenador;
     }
 
     public String getNroListaStr() {

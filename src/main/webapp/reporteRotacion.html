@@ -116,8 +116,8 @@
 				$('#chart').empty();
 				escrutRefresh();
 				plot1();
-				$("div.jqplot-yaxis-tick:contains('FRENTE PARA LA VICTORIA')")
-						.addClass("fpv");
+				$("div.jqplot-yaxis-tick:contains('FRENTE JUSTICIALISTA')")
+						.addClass("selected");
 				plot4TO();
 			}, CAMBIO)
 		};
@@ -127,7 +127,7 @@
 				$('#chart').empty();
 				escrutRefresh();
 				plot4();
-				$("td:contains('FRENTE PARA LA VICTORIA')").addClass("fpv");
+				$("td:contains('FRENTE JUSTICIALISTA')").addClass("selected");
 				plot1TO();
 			}, CAMBIO)
 		};
@@ -138,8 +138,8 @@
 							escrutRefresh();
 							plot1();
 							$(
-									"div.jqplot-yaxis-tick:contains('FRENTE PARA LA VICTORIA')")
-									.addClass("fpv");
+									"div.jqplot-yaxis-tick:contains('FRENTE JUSTICIALISTA')")
+									.addClass("selected");
 							plot4TO();
 						});
 	</script>

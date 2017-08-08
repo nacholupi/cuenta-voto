@@ -12,6 +12,7 @@ public class VotoViewRowRenderer implements RowRenderer {
         VotoView votoView = (VotoView) data;
         row.appendChild(new Label(votoView.getNroListaStr()));
         row.appendChild(new Label(votoView.getAgrupacion()));
+        row.appendChild(new CantSenadorBox(votoView));
         row.appendChild(new CantDipBox(votoView));
         row.appendChild(new CantLegBox(votoView));
         row.appendChild(new CantConsBox(votoView));

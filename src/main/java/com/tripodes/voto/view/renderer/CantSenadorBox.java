@@ -5,15 +5,15 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
-public class CantDipBox extends CantBox {
+public class CantSenadorBox extends CantBox {
 
     private static final long serialVersionUID = 1L;
 
-    public CantDipBox(final VotoView votoView) {
-        super(!votoView.getTieneDip());
+    public CantSenadorBox(final VotoView votoView) {
+        super(!votoView.getTieneSenador());
         super.addEventListener(Events.ON_CHANGE, new EventListener() {
             public void onEvent(Event event) throws Exception {
-                votoView.setCantDiputado(getValue());
+                votoView.setCantSenador(getValue());
             }
         });
     }
