@@ -25,6 +25,7 @@
 					<columns height="40px">
 						<column width="60px"><label value="${c:l('votacion.column.nroLista')}" /></column>
 						<column hflex="7"><label value="${c:l('votacion.column.agrup')}" /></column>
+						<column hflex="7"><label value="${c:l('votacion.column.lista')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.sen')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.dip')}" /></column>
 						<column hflex="2"><label value="${c:l('votacion.column.leg')}" /></column>
