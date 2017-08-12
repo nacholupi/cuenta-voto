@@ -1,6 +1,6 @@
 package com.tripodes.voto.view.renderer;
 
-import com.tripodes.voto.view.VotoView;
+import com.tripodes.voto.core.VotoView;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;

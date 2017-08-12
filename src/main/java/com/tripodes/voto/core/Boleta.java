@@ -1,55 +1,41 @@
-package com.tripodes.voto.view;
+package com.tripodes.voto.core;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.io.Serializable;
 
-public class VotoView implements Serializable {
+@Entity(name = "opcionvoto")
+public class Boleta implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer idOpcionVoto;
+    @Id
+    @GeneratedValue
+    @Column(name = "idopcionvoto")
+    private Integer id;
+    private Integer orden;
+    @Column(name = "nrolista")
     private Integer nroLista;
     private String agrupacion;
+    @Column(name = "listaint")
     private String listaInt;
+    @Column(name = "tienesenador")
     private Boolean tieneSenador;
+    @Column(name = "tienediputado")
     private Boolean tieneDip;
+    @Column(name = "tienelegislador")
     private Boolean tieneLeg;
+    @Column(name = "tieneconsejal")
     private Boolean tieneCons;
 
-    private Integer cantSenador;
-    private Integer cantDiputado;
-    private Integer cantLegislador;
-    private Integer cantConsejal;
-
-    public Integer getIdOpcionVoto() {
-        return idOpcionVoto;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdOpcionVoto(Integer idOpcionVoto) {
-        this.idOpcionVoto = idOpcionVoto;
-    }
-
-    public Integer getCantDiputado() {
-        return cantDiputado;
-    }
-
-    public void setCantDiputado(Integer cantDiputado) {
-        this.cantDiputado = cantDiputado;
-    }
-
-    public Integer getCantLegislador() {
-        return cantLegislador;
-    }
-
-    public void setCantLegislador(Integer cantLegislador) {
-        this.cantLegislador = cantLegislador;
-    }
-
-    public Integer getCantConsejal() {
-        return cantConsejal;
-    }
-
-    public void setCantConsejal(Integer cantConsejal) {
-        this.cantConsejal = cantConsejal;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getNroLista() {
@@ -58,6 +44,14 @@ public class VotoView implements Serializable {
 
     public void setNroLista(Integer nroLista) {
         this.nroLista = nroLista;
+    }
+
+    public Integer getOrden() {
+        return orden;
+    }
+
+    public void setOrden(Integer orden) {
+        this.orden = orden;
     }
 
     public String getAgrupacion() {
@@ -106,20 +100,5 @@ public class VotoView implements Serializable {
 
     public void setTieneSenador(Boolean tieneSenador) {
         this.tieneSenador = tieneSenador;
-    }
-
-    public Integer getCantSenador() {
-        return cantSenador;
-    }
-
-    public void setCantSenador(Integer cantSenador) {
-        this.cantSenador = cantSenador;
-    }
-
-    public String getNroListaStr() {
-        if (getNroLista() > 0) {
-            return getNroLista().toString();
-        } else
-            return null;
     }
 }

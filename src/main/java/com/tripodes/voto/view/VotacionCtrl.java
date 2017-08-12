@@ -1,9 +1,8 @@
 package com.tripodes.voto.view;
 
-import com.tripodes.voto.core.EleccionService;
+import com.tripodes.voto.core.EscrutionioService;
 import com.tripodes.voto.core.Mesa;
-import com.tripodes.voto.core.OpcionVoto;
-import com.tripodes.voto.core.Voto;
+import com.tripodes.voto.core.VotoView;
 import com.tripodes.voto.view.renderer.CantBox;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
@@ -17,19 +16,16 @@ import org.zkoss.zul.*;
 import org.zkoss.zul.api.Grid;
 import org.zkoss.zul.impl.api.InputElement;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class VotacionCtrl extends GenericForwardComposer {
 
     private static final long serialVersionUID = 20111130143824L;
 
-    private static EleccionService eleccionService = (EleccionService) SpringUtil.getBean("eleccionService",
-            EleccionService.class);
+    private static EscrutionioService eleccionService = (EscrutionioService) SpringUtil.getBean("escrutionioService",
+            EscrutionioService.class);
 
-    private static final List<OpcionVoto> listOpVoto = eleccionService.getOpcionVotoList();
+    private static final List<VotoView> listOpVoto = eleccionService.getVotoViewList();
 
     private static final List<Mesa> listMesa = eleccionService.getMesaList();
 
@@ -42,7 +38,7 @@ public class VotacionCtrl extends GenericForwardComposer {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-        listaVotos = new ListModelList(VotoConverter.toListVotoView(listOpVoto));
+        listaVotos = new ListModelList(listOpVoto);
         gridOpVoto.setModel(listaVotos);
     }
 
@@ -69,8 +65,7 @@ public class VotacionCtrl extends GenericForwardComposer {
         // Checkeo que esten cargados todos las cantidades habilitadas
         checkCantBox(gridOpVoto);
 
-        List<Voto> votos = fillListVoto(((ListModelList) listaVotos).getInnerList(),
-                idMesa);
+        List<VotoView> votos = ((ListModelList) listaVotos).getInnerList();
 
         popUpSubmit(votos, mesa);
     }
@@ -89,21 +84,7 @@ public class VotacionCtrl extends GenericForwardComposer {
         return mesa;
     }
 
-    private static List<Voto> fillListVoto(List<VotoView> listview, Integer idMesa) {
-        List<Voto> listResult = new ArrayList<Voto>();
-        Timestamp time = new Timestamp(Calendar.getInstance().getTime().getTime());
-        for (VotoView votoView : listview) {
-            Voto voto = VotoConverter.toVoto(votoView);
-            voto.setIdMesa(idMesa);
-            // FIXME HARDCODE!!!
-            voto.setIdUsuario(1);
-            voto.setFechaAlta(time);
-            listResult.add(voto);
-        }
-        return listResult;
-    }
-
-    private void popUpSubmit(final List<Voto> listaVoto, final Mesa mesa)
+    private void popUpSubmit(final List<VotoView> listaVoto, final Mesa mesa)
             throws InterruptedException {
 
         int totalSen = 0;
@@ -111,12 +92,6 @@ public class VotacionCtrl extends GenericForwardComposer {
         int totalLeg = 0;
         int totalCons = 0;
 
-        for (Voto voto : listaVoto) {
-            totalSen += voto.getCantSenador();
-            totalDip += voto.getCantDiputado();
-            totalLeg += voto.getCantLegislador();
-            totalCons += voto.getCantConsejal();
-        }
 
         String mensaje = String.format(Labels.getLabel("votacion.warning.verifTotales"),
                 mesa.getId(), totalSen, totalDip, totalLeg, totalCons);
@@ -125,8 +100,7 @@ public class VotacionCtrl extends GenericForwardComposer {
                     public void onEvent(Event evt) throws InterruptedException {
                         switch ((Integer) evt.getData()) {
                             case Messagebox.YES:
-                                // GUARDAR!
-                                contProcesoSubmit(listaVoto);
+                                save(listaVoto, mesa.getId());
                                 break;
                             case Messagebox.NO:
                                 break;
@@ -135,8 +109,8 @@ public class VotacionCtrl extends GenericForwardComposer {
                 });
     }
 
-    private void contProcesoSubmit(List<Voto> votos) {
-        eleccionService.saveVotos(votos);
+    private void save(List<VotoView> votos, Integer mesaId) {
+        eleccionService.saveVotos(votos, mesaId);
         Executions.sendRedirect(Labels.getLabel("votacion.redirect.votacion"));
     }
 
