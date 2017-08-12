@@ -1,5 +1,8 @@
 package com.tripodes.voto.core;
 
+import com.tripodes.voto.core.exception.InvalidAmountException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class EscrutinioSimplificadoHelper {
@@ -19,37 +22,55 @@ public class EscrutinioSimplificadoHelper {
         return listaConBoletaAgrupada;
     }
 
-    public static List<VotoView> modificarABoletaAgrupada(List<VotoView> listaConTotales) {
-        VotoView totalXAgrupacion = removeById(listaConTotales, ID_TOTAL_A_AGRUPACIONES);
-        VotoView totales = removeById(listaConTotales, ID_TOTAL_X_COLUMNAS);
-        VotoView otrosPartidos = calcularOtrosPartidos(listaConTotales, totalXAgrupacion);
+    public static List<VotoView> modificarABoletaAgrupada(List<VotoView> listaConTotales)
+            throws InvalidAmountException {
+        List<VotoView> resultado = new ArrayList<VotoView>(listaConTotales);
+        VotoView totalXAgrupacion = removeById(resultado, ID_TOTAL_A_AGRUPACIONES);
+        VotoView totales = removeById(resultado, ID_TOTAL_X_COLUMNAS);
+        VotoView otrosPartidos = calcularOtrosPartidos(resultado, totalXAgrupacion);
         VotoView votosInvalidos = calcularInvalidos(totales, totalXAgrupacion);
-        listaConTotales.add(otrosPartidos);
-        listaConTotales.add(votosInvalidos);
-        return listaConTotales;
+        resultado.add(otrosPartidos);
+        resultado.add(votosInvalidos);
+        return resultado;
     }
 
-    private static VotoView calcularInvalidos(VotoView totales, VotoView totalXAgrupacion) {
+    private static VotoView calcularInvalidos(VotoView totales, VotoView totalXAgrupacion)
+            throws InvalidAmountException {
         int totalSen = totales.getCantSenador() - totalXAgrupacion.getCantSenador();
         int totalDip = totales.getCantDiputado() - totalXAgrupacion.getCantDiputado();
         int totalLeg = totales.getCantLegislador() - totalXAgrupacion.getCantLegislador();
         int totalCons = totales.getCantConsejal() - totalXAgrupacion.getCantConsejal();
+
+        if (hasInvalidAmounts(totalSen, totalDip, totalLeg, totalCons)) {
+            throw new InvalidAmountException(TOTAL_X_COLUMNAS);
+        }
+
         return createTotalVotoView(ID_VOTOS_INVALIDOS, null, totalSen, totalDip, totalLeg, totalCons);
     }
 
-    private static VotoView calcularOtrosPartidos(List<VotoView> listaConTotales, VotoView totalXAgrupacion) {
-        int totalSen = totalXAgrupacion.getCantSenador();
-        int totalDip = totalXAgrupacion.getCantDiputado();
-        int totalLeg = totalXAgrupacion.getCantLegislador();
-        int totalCons = totalXAgrupacion.getCantConsejal();
+    private static VotoView calcularOtrosPartidos(List<VotoView> listaConTotales, VotoView totalXAgrupacion)
+            throws InvalidAmountException {
+        int otrosSen = totalXAgrupacion.getCantSenador();
+        int otrosDip = totalXAgrupacion.getCantDiputado();
+        int otrosLeg = totalXAgrupacion.getCantLegislador();
+        int otrosCons = totalXAgrupacion.getCantConsejal();
 
         for (VotoView voto : listaConTotales) {
-            totalSen -= voto.getCantSenador();
-            totalDip -= voto.getCantDiputado();
-            totalLeg -= voto.getCantLegislador();
-            totalCons -= voto.getCantConsejal();
+            otrosSen -= voto.getCantSenador();
+            otrosDip -= voto.getCantDiputado();
+            otrosLeg -= voto.getCantLegislador();
+            otrosCons -= voto.getCantConsejal();
         }
-        return createTotalVotoView(ID_VOTOS_OTROS, null, totalSen, totalDip, totalLeg, totalCons);
+
+        if (hasInvalidAmounts(otrosSen, otrosDip, otrosLeg, otrosCons)) {
+            throw new InvalidAmountException(TOTAL_A_AGRUPACIONES);
+        }
+
+        return createTotalVotoView(ID_VOTOS_OTROS, null, otrosSen, otrosDip, otrosLeg, otrosCons);
+    }
+
+    private static boolean hasInvalidAmounts(int cantSen, int cantDip, int cantLeg, int cantCons) {
+        return (cantSen < 0) || (cantDip < 0) || (cantLeg < 0) || (cantCons < 0);
     }
 
 

@@ -3,7 +3,11 @@ package com.tripodes.voto.view;
 import com.tripodes.voto.core.EscrutionioService;
 import com.tripodes.voto.core.Mesa;
 import com.tripodes.voto.core.VotoView;
+import com.tripodes.voto.core.exception.ForeignKeyException;
+import com.tripodes.voto.core.exception.InvalidAmountException;
 import com.tripodes.voto.view.renderer.CantBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.zkoss.util.resource.Labels;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
@@ -22,12 +26,14 @@ public class VotacionCtrl extends GenericForwardComposer {
 
     private static final long serialVersionUID = 20111130143824L;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(VotacionCtrl.class);
+
     private static EscrutionioService eleccionService = (EscrutionioService) SpringUtil.getBean("escrutionioService",
             EscrutionioService.class);
 
-    private static final List<VotoView> listOpVoto = eleccionService.getVotoViewList();
-
     private static final List<Mesa> listMesa = eleccionService.getMesaList();
+
+    private List<VotoView> listOpVoto;
 
     private ListModel listaVotos;
     private Integer idMesa;
@@ -38,6 +44,7 @@ public class VotacionCtrl extends GenericForwardComposer {
     @Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
+        listOpVoto = eleccionService.getVotoViewList();
         listaVotos = new ListModelList(listOpVoto);
         gridOpVoto.setModel(listaVotos);
     }
@@ -87,14 +94,7 @@ public class VotacionCtrl extends GenericForwardComposer {
     private void popUpSubmit(final List<VotoView> listaVoto, final Mesa mesa)
             throws InterruptedException {
 
-        int totalSen = 0;
-        int totalDip = 0;
-        int totalLeg = 0;
-        int totalCons = 0;
-
-
-        String mensaje = String.format(Labels.getLabel("votacion.warning.verifTotales"),
-                mesa.getId(), totalSen, totalDip, totalLeg, totalCons);
+        String mensaje = String.format(Labels.getLabel("votacion.warning.verifTotales"), mesa.getId());
         Messagebox.show(mensaje, Labels.getLabel("votacion.titulo.confirmacion"),
                 Messagebox.YES | Messagebox.NO, Messagebox.QUESTION, new EventListener() {
                     public void onEvent(Event evt) throws InterruptedException {
@@ -109,9 +109,19 @@ public class VotacionCtrl extends GenericForwardComposer {
                 });
     }
 
-    private void save(List<VotoView> votos, Integer mesaId) {
-        eleccionService.saveVotos(votos, mesaId);
-        Executions.sendRedirect(Labels.getLabel("votacion.redirect.votacion"));
+    private void save(List<VotoView> votos, Integer mesaId) throws InterruptedException {
+        try {
+            eleccionService.saveVotos(votos, mesaId);
+            Executions.sendRedirect(Labels.getLabel("votacion.redirect.votacion"));
+        } catch (InvalidAmountException e) {
+            LOGGER.error("Error al salvar los votos", e);
+            Messagebox.show("Error al calcular los totales - Valide: " + e.getMessage(), "Error",
+                    Messagebox.OK, Messagebox.ERROR);
+        } catch (ForeignKeyException e) {
+            LOGGER.error("Error al salvar los votos", e);
+            Messagebox.show("Ya fue cargada la mesa: " + mesaId, "Error",
+                    Messagebox.OK, Messagebox.ERROR);
+        }
     }
 
     @SuppressWarnings("unchecked")

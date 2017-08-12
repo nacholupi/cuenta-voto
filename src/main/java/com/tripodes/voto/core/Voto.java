@@ -104,4 +104,19 @@ public class Voto implements Serializable {
     public void setCantSenador(Integer cantSenador) {
         this.cantSenador = cantSenador;
     }
+
+    @Override
+    public String toString() {
+        return "Voto{" +
+                "id=" + id +
+                ", idMesa=" + idMesa +
+                ", idOpcionVoto=" + idOpcionVoto +
+                ", idUsuario=" + idUsuario +
+                ", cantSenador=" + cantSenador +
+                ", cantDiputado=" + cantDiputado +
+                ", cantLegislador=" + cantLegislador +
+                ", cantConsejal=" + cantConsejal +
+                ", fechaAlta=" + fechaAlta +
+                '}';
+    }
 }
