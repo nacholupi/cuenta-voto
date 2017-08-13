@@ -114,11 +114,11 @@ public class VotacionCtrl extends GenericForwardComposer {
             eleccionService.saveVotos(votos, mesaId);
             Executions.sendRedirect(Labels.getLabel("votacion.redirect.votacion"));
         } catch (InvalidAmountException e) {
-            LOGGER.error("Error al salvar los votos", e);
+            LOGGER.error("Error al calcular los totales. Message: " +  e.getMessage());
             Messagebox.show("Error al calcular los totales - Valide: " + e.getMessage(), "Error",
                     Messagebox.OK, Messagebox.ERROR);
         } catch (ForeignKeyException e) {
-            LOGGER.error("Error al salvar los votos", e);
+            LOGGER.error("Error al salvar los votos. Ya fue cargada la mesa. Message: " +  e.getMessage());
             Messagebox.show("Ya fue cargada la mesa: " + mesaId, "Error",
                     Messagebox.OK, Messagebox.ERROR);
         }
